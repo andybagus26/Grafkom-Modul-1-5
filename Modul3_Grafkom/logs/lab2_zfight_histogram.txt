@@ -1,0 +1,22 @@
+# Histogram selisih kode depth 16-bit (B - A) di piksel tempat kedua quad bertumpuk
+# selisih 0 berarti kedua quad mendapat kode depth yang sama -> z-fight
+
+near = 0.001  (n piksel = 40570; nilai di luar [-6,6] dijepit ke ujung)
+   +0      40570  ############################################################
+
+near = 1  (n piksel = 40570; nilai di luar [-6,6] dijepit ke ujung)
+   -6 <=    9672  ############################################################
+   -5       1984  ############
+   -4       1984  ############
+   -3       1984  ############
+   -2       1984  ############
+   -1       1984  ############
+   +0       1984  ############
+   +1       1984  ############
+   +2       1984  ############
+   +3       1984  ############
+   +4       1972  ############
+   +5       1968  ############
+   +6 >=    9102  ########################################################
+# lebar 1 kode 16-bit di jarak 15, near=0.001: 3.4332 unit
+# lebar 1 kode 16-bit di jarak 15, near=1: 0.0034 unit

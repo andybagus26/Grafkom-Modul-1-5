@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pusaka3D Denah Candi</title>
+<link rel="stylesheet" href="cvd.css" />
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; font: 14px/1.5 system-ui, sans-serif; background: #12121a; color: #e8e8ef; }
+  header { padding: .6rem 1rem; background: #1c1c28; border-bottom: 1px solid #333; }
+  header h1 { font-size: 1rem; margin: 0; }
+  header p { margin: .25rem 0 0; font-size: .8rem; color: #a8a8b8; }
+  #wrap { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; }
+  #view { position: relative; }
+  canvas { border: 1px solid #333; background: #12121e; display: block; }
+  #legend { flex: 1 1 220px; max-width: 300px; min-width: 200px; }
+  #legend h2 { font-size: .9rem; margin: 0 0 .5rem; }
+  .row { display: flex; align-items: center; gap: .5rem; margin: .3rem 0; }
+  .swatch { width: 20px; height: 20px; border: 1px solid #0006; flex: 0 0 auto; }
+  .marker { width: 16px; text-align: center; font-weight: 700; }
+  label.toggle { display: flex; gap: .4rem; align-items: center; margin-top: .8rem; font-size: .85rem; }
+  .hint { font-size: .75rem; color: #999; margin-top: .6rem; }
+  button { font: inherit; padding: .3rem .6rem; margin-top: .6rem; }
+  #view { max-width: 100%; }
+  canvas { max-width: 100%; height: auto; }
+  #markers { position: absolute; inset: 1px; pointer-events: none; }
+  .mk { position: absolute; transform: translate(-50%, -50%); font-size: 15px; line-height: 1;
+        text-shadow: 0 0 2px #000, 0 0 2px #000; pointer-events: auto; cursor: help; }
+  pre#dump { display: none; }
+  @media (max-width: 640px) { #wrap { padding: .5rem; } #legend { min-width: 0; } }
+</style>
+<!-- Three.js from a CDN (works from GitHub Pages). Pin the version. -->
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<!-- SVG colour-vision-deficiency simulation filters -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="deuteranopia">
+    <feColorMatrix type="matrix" values="
+      0.625 0.375 0 0 0
+      0.700 0.300 0 0 0
+      0.000 0.300 0.700 0 0
+      0 0 0 1 0" />
+  </filter>
+  <filter id="protanopia">
+    <feColorMatrix type="matrix" values="
+      0.567 0.433 0 0 0
+      0.558 0.442 0 0 0
+      0.000 0.242 0.758 0 0
+      0 0 0 1 0" />
+  </filter>
+</svg>
+</head>
+<body>
+<header>
+  <h1>Pusaka3D &mdash; Denah candi digambar dengan Three.js (Modul 2)</h1>
+  <p id="planname"></p>
+  <p>Same <code>pusaka_plan.json</code> the from-scratch <code>raster.mjs</code> draws.
+     Outline = <code>THREE.Line</code>, silhouette = <code>ShapeGeometry</code>.
+     Compare <code>Export PPM</code> against <code>out/plan_scratch.ppm</code> with <code>node compare.mjs</code>.</p>
+</header>
+<div id="wrap">
+  <div id="view">
+    <canvas id="c" width="800" height="600"></canvas>
+    <div id="markers" aria-hidden="true"></div>
+  </div>
+  <div id="legend">
+    <h2>Legend</h2>
+    <div id="rows"></div>
+    <label class="toggle"><input type="checkbox" id="cvd" /> Simulate deuteranopia</label>
+    <label class="toggle"><input type="checkbox" id="cvd2" /> Simulate protanopia</label>
+    <label class="toggle"><input type="checkbox" id="gray" /> Grayscale</label>
+    <label class="toggle"><input type="checkbox" id="fill" checked /> Fill silhouette</label>
+    <button id="export">Export PPM</button>
+    <p class="hint">The legend uses a <b>viridis</b> ramp (luminance varies), a
+      <b>label</b>, and a distinct <b>marker shape</b> per category &mdash; so all
+      five stay distinguishable under the CVD filters and in grayscale.</p>
+  </div>
+</div>
+<script type="module" src="viewer.mjs"></script>
+</body>
+</html>

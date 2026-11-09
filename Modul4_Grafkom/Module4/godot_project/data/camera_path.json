@@ -1,0 +1,10 @@
+{
+  "_comment": "5 control points on a semicircular flyover around the Pusaka3D temple, radius 8, height 3, angles 0/45/90/135/180 deg -- deterministic, no RNG. COPY of code/Module4/data/camera_path.json (res://../ is outside the Godot project, so the project keeps its own copy) -- keep the two identical.",
+  "control_points": [
+    [8.000, 3.0, 0.000],
+    [5.657, 3.0, 5.657],
+    [0.000, 3.0, 8.000],
+    [-5.657, 3.0, 5.657],
+    [-8.000, 3.0, 0.000]
+  ]
+}

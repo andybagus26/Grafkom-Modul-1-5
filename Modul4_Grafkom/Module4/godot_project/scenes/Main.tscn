@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/arm_kinematics.gd" id="1_arm"]
+[ext_resource type="Script" path="res://scripts/spline_camera.gd" id="2_path"]
+[ext_resource type="Script" path="res://scripts/foot_slide_demo.gd" id="3_walker"]
+[ext_resource type="Script" path="res://scripts/temple_blockout.gd" id="4_temple"]
+[ext_resource type="Script" path="res://scripts/gimbal_lock_demo.gd" id="5_gimbal"]
+[ext_resource type="Script" path="res://scripts/path_walker.gd" id="6_pathwalk"]
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.7, -0.5, 0.5, 0, 0.7, 0.7, -0.7, -0.5, 0.5, 4, 8, 4)
+shadow_enabled = true
+
+[node name="OverviewCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.85, 0.53, 0, -0.53, 0.85, 0, 6, 14)
+
+[node name="Arm" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 3.6)
+script = ExtResource("1_arm")
+shoulder_length = 3.0
+elbow_length = 2.0
+shoulder_angle_deg = 30.0
+elbow_angle_deg = 60.0
+ik_target = Vector3(4, 1, 0)
+
+[node name="CameraPath" type="Path3D" parent="."]
+script = ExtResource("2_path")
+control_points_json = "res://data/camera_path.json"
+seconds_per_lap = 12.0
+samples_per_segment = 10
+look_target = Vector3(0, 2, 0)
+
+[node name="PathFollow3D" type="PathFollow3D" parent="CameraPath"]
+rotation_mode = 0
+loop = true
+
+[node name="PathCamera" type="Camera3D" parent="CameraPath/PathFollow3D"]
+current = true
+
+[node name="Walker" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 4.6)
+script = ExtResource("3_walker")
+scripted_speed = 1.5
+stride_per_cycle = 1.0
+cycle_rate = 1.0
+loop_seconds = 8.0
+
+[node name="TempleBlockout" type="Node3D" parent="."]
+script = ExtResource("4_temple")
+
+[node name="GimbalLockDemo" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.5)
+script = ExtResource("5_gimbal")
+
+[node name="PathWalker" type="Path3D" parent="."]
+script = ExtResource("6_pathwalk")

@@ -1,0 +1,120 @@
+{
+  "model": "gapura_bentar.glb",
+  "_comment": "Candi bentar in the style of Gapura Wringin Lawang (Trowulan, Majapahit). 1:50 scale model, procedural, authored by Andy Bagus, CC0. Not a survey-accurate replica.",
+  "scale": "1:50",
+  "sources": [
+    "Wikipedia, 'Trowulan' (section Wringin Lawang), https://en.wikipedia.org/wiki/Trowulan",
+    "beritajatim.com, article on Candi Wringin Lawang (height 15.50 m, footprint 13 x 11.5 m, brick body, stone steps, banyan-tree name, two proposed functions), https://beritajatim.com/?p=1098816",
+    "detik.com Jatim, '5 Situs Bersejarah Trowulan Bukti Kejayaan Majapahit' (14th century), https://www.detik.com/jatim/budaya/d-8038359/5-situs-bersejarah-trowulan-bukti-kejayaan-majapahit"
+  ],
+  "hotspots": [
+    {
+      "id": "celah",
+      "part": "badan_timur",
+      "position": [
+        0.034,
+        0.115,
+        0.0
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "name_en": "The split (lawang)",
+      "name_id": "Celah Gapura (lawang)",
+      "text_en": "A candi bentar is a gateway built like one temple sliced down the middle: two mirror-image halves with sheer, flat inner faces and NO roof joining them over the path. A roofed gate that closes over the passage is a different type, the paduraksa (Gapura Bajang Ratu, also in Trowulan, is one). The model's passage is 7 cm = 3.5 m at real size.",
+      "text_id": "Candi bentar adalah gapura yang dibangun seperti satu candi yang dibelah dua: dua belahan kembar-cermin dengan sisi dalam yang tegak dan rata, TANPA atap yang menyatukan keduanya di atas jalan. Gapura yang beratap menutup jalan adalah tipe lain, paduraksa (contohnya Gapura Bajang Ratu, juga di Trowulan). Celah model ini 7 cm = 3,5 m pada ukuran sebenarnya."
+    },
+    {
+      "id": "bata",
+      "part": "badan_barat",
+      "position": [
+        -0.075,
+        0.115,
+        0.086
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name_en": "Red brick (bata merah)",
+      "name_id": "Bata Merah",
+      "text_en": "Wringin Lawang is built mostly of fired red brick, the typical material of Majapahit architecture around its capital at Trowulan -- unlike the andesite stone of Central Javanese temples such as Prambanan or Borobudur.",
+      "text_id": "Wringin Lawang sebagian besar dibangun dari bata merah yang dibakar, bahan khas arsitektur Majapahit di sekitar ibu kotanya di Trowulan -- berbeda dengan batu andesit candi-candi Jawa Tengah seperti Prambanan atau Borobudur."
+    },
+    {
+      "id": "atap",
+      "part": "atap2_timur",
+      "position": [
+        0.0625,
+        0.2325,
+        0.059
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name_en": "Stepped upper part",
+      "name_id": "Atap Bertingkat",
+      "text_en": "Each half rises in shrinking steps like the roof of a candi. Seen from the front, the two halves together outline one complete temple silhouette with its centre cut out -- the path itself is the missing middle.",
+      "text_id": "Setiap belahan naik bertingkat-tingkat dan mengecil seperti atap candi. Dari depan, kedua belahan bersama-sama membentuk siluet satu candi utuh yang bagian tengahnya terpotong -- jalan itulah bagian tengah yang hilang."
+    },
+    {
+      "id": "tangga",
+      "part": "tangga_utara",
+      "position": [
+        0.0,
+        0.007,
+        0.125
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "name_en": "Stone steps",
+      "name_id": "Anak Tangga Batu",
+      "text_en": "Although the gate itself is brick, its steps are stone. Steps and thresholds take the most wear from feet, so a harder material is used exactly where the load is.",
+      "text_id": "Meskipun gapuranya dari bata, anak tangganya dari batu. Tangga dan ambang paling sering terinjak, jadi bahan yang lebih keras dipakai tepat di bagian yang paling menanggung beban."
+    },
+    {
+      "id": "skala",
+      "part": "kaki_timur",
+      "position": [
+        0.0825,
+        0.041,
+        0.101
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name_en": "Size: 1:50 scale model",
+      "name_id": "Ukuran: Model Skala 1:50",
+      "text_en": "The real gate is about 15.5 m tall on a footprint of roughly 13 m x 11.5 m. This AR model is a fixed 1:50 scale model (31 cm tall) so it fits on a table; at 1:1 it would be as tall as a five-storey building.",
+      "text_id": "Gapura aslinya setinggi sekitar 15,5 m dengan denah kira-kira 13 m x 11,5 m. Model AR ini adalah model skala 1:50 yang tetap (tinggi 31 cm) agar muat di atas meja; pada skala 1:1 tingginya setara gedung lima lantai."
+    },
+    {
+      "id": "nama",
+      "part": "puncak_barat",
+      "position": [
+        -0.0475,
+        0.311,
+        0.0
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "name_en": "Name and purpose",
+      "name_id": "Nama dan Fungsi",
+      "text_en": "'Wringin Lawang' means 'banyan gate', after a banyan (beringin) tree that once grew beside it. Its original purpose is still debated: some scholars see it as an entrance to the Majapahit capital, others -- pointing to old wells nearby -- as the gate of a residential compound.",
+      "text_id": "'Wringin Lawang' berarti 'gapura beringin', dari pohon beringin yang dahulu tumbuh di dekatnya. Fungsi aslinya masih diperdebatkan: sebagian ahli menganggapnya pintu masuk ibu kota Majapahit, sebagian lain -- berdasarkan sumur-sumur kuno di sekitarnya -- menganggapnya gapura sebuah kompleks hunian."
+    }
+  ]
+}

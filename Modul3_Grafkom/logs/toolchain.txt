@@ -1,0 +1,9 @@
+# Toolchain Lab 1 (dicatat otomatis 2026-11-04 13:52 WIB)
+OS: macOS 27.2 (build 26B123), Darwin 27.2.0, arm64
+Python: 3.14.7 (/Library/Frameworks/Python.framework/Versions/3.14/bin/python3)
+NumPy: 2.5.4
+Pillow: 12.3.0
+Node: v26.12.0
+npm: 11.20.0
+Browser terpasang: Google Chrome 156.0.8078.74, Safari 27.2
+Three.js: r128 (CDN cdnjs three.js/r128 + jsdelivr three@0.128.0 OrbitControls/OBJLoader, lihat web/index.html)

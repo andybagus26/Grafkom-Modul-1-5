@@ -1,0 +1,10 @@
+piramida mip 4 level (box 2x2 di linear light): ukuran [(256, 256), (128, 128), (64, 64), (32, 32)]; tulis out/mip_pyramid.ppm
+
+Candi dari jauh (192x192, kamera 3x lebih jauh): 1508 piksel bagian dalam
+              mode |  PSNR ke truth (dalam) | energi HF |Lap| | kelap-kelip temporal
+      tanpa mipmap |                15.30 dB |          125.35 |                45.72
+  mipmap trilinear |                33.16 dB |           20.40 |                 1.19
+kebenaran (SS 8x8) |                      - |           17.76 |                    -
+
+kelap-kelip turun 38.4x, energi HF turun 6.1x, PSNR ke kebenaran naik +17.9 dB
+tulis out/lab2_mipmap_panel.png (tanpa mip | mip | kebenaran | selisih frame tanpa mip x4 | selisih frame mip x4)

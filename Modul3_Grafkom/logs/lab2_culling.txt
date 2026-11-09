@@ -1,0 +1,12 @@
+
+mymodel.obj (pilar, model sendiri) (432 segitiga, 512x512, waktu = terbaik dari 3 run)
+                  di-raster  di-cull   fragment  waktu (s)
+  tanpa culling         432        0      81866      0.098
+  dengan culling        218      214      60136      0.065
+  fragment turun 21730 (26.5%), waktu turun 34.0%, citra identik? PSNR inf dB
+
+data/pusaka_model.obj (candi, setelah rewind) (180 segitiga, 512x512, waktu = terbaik dari 3 run)
+                  di-raster  di-cull   fragment  waktu (s)
+  tanpa culling         180        0     277693      0.125
+  dengan culling         76      104     220842      0.078
+  fragment turun 56851 (20.5%), waktu turun 37.4%, citra identik? PSNR inf dB

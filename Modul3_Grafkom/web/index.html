@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilar Real-Time</title>
+  <style>
+    :root {
+      --bg: #f4f4f1; --fg: #1d1f24; --muted: #5d6270; --panel: #ffffff; --line: #d9dad6; --accent: #2457c5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #15171c; --fg: #e6e7ea; --muted: #9aa0ad; --panel: #1e2128; --line: #2e323b; --accent: #7aa2ff;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #15171c; --fg: #e6e7ea; --muted: #9aa0ad; --panel: #1e2128; --line: #2e323b; --accent: #7aa2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    main { max-width: 560px; margin: 0 auto; padding: 24px 16px 40px; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 16px; }
+    #stage { position: relative; width: 100%; max-width: 512px; aspect-ratio: 1 / 1; background: #000;
+             border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    #stage canvas { width: 100% !important; height: 100% !important; display: block; touch-action: none; }
+    #status { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+              color: #ddd; padding: 16px; text-align: center; }
+    #status.error { color: #ff8a80; }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+    button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line);
+             background: var(--panel); color: var(--fg); cursor: pointer; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    #frame { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+    dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 16px 0 0;
+         color: var(--muted); font-size: 13px; }
+    dt { color: var(--fg); }
+    dd { margin: 0; }
+    pre.out { display: none; }
+  </style>
+  <!-- Versi Three.js dikunci: r128 (build non-module + examples/js). -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Pilar bertingkat, real-time</h1>
+    <p class="sub">Andy Bagus · Praktikum Grafika Komputer Modul 3 · mymodel.obj (432 segitiga) + texture CC0</p>
+
+    <div id="stage"><div id="status">Memuat model dan texture...</div></div>
+
+    <div class="bar">
+      <button id="btn-reset">Reset kamera</button>
+      <button id="btn-ppm" class="primary">Ekspor PPM 512×512</button>
+      <span id="frame">–</span>
+    </div>
+
+    <dl>
+      <dt>Orbit</dt><dd>seret kiri / satu jari</dd>
+      <dt>Pan</dt><dd>seret kanan / dua jari</dd>
+      <dt>Zoom</dt><dd>scroll / pinch</dd>
+      <dt>Kamera</dt><dd>fov 50°, near 0.1, far 30, eye (0, 1.2, 3.8) → (0, 0, 0), sama dengan raster3d.py --scene mymodel</dd>
+      <dt>Light</dt><dd>ambient 0.25 + directional 0.75 dari (0.5, 0.8, 0.6), output sRGB</dd>
+    </dl>
+  </main>
+  <pre id="ppm" class="out"></pre>
+  <pre id="bench" class="out"></pre>
+  <script src="viewer.js"></script>
+</body>
+</html>

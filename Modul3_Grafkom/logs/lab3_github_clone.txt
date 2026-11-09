@@ -1,0 +1,23 @@
+# 2026-11-10 00:40:28 WIB -- clone bersih dari GitHub, macOS 27.2
+$ git clone https://github.com/andybagus26/Grafkom-Modul-1-5.git
+(commit 9d636a7)
+$ cd Grafkom-Modul-1-5/Modul3_Grafkom && ls web
+index.html
+viewer.js
+$ python3 -m venv .venv && . .venv/bin/activate
+Python 3.14.7
+$ pip install -r requirements.txt   (lalu pip list)
+numpy   2.5.4
+pillow  12.3.0
+$ python make_model.py
+Model berhasil digenerate ke 'mymodel.obj'!
+- Jumlah vertex: 227
+- Jumlah UV: 227
+- Jumlah segitiga: 432
+Tekstur berhasil dibuat ke 'texture.ppm' (Ukuran: 512x512, Format: PPM P6)
+tulis web/mymodel.obj dan web/texture.png (untuk viewer Three.js)
+$ python tests.py   (27 PASS, 0 FAIL; baris terakhir:)
+[PASS] raster vs raytrace (mymodel, 128x128) PSNR >= 60 dB  ->  PSNR inf dB
+----------------------------------------------------------------------
+Semua tes lulus.
+exit code: 0

@@ -1,0 +1,5 @@
+# Versi dikunci sesuai mesin pengembangan (logs/toolchain.txt).
+# Pipeline (transforms, raster3d, raytrace) hanya memakai NumPy.
+# Pillow hanya untuk menyimpan panel PNG di laporan (opsional).
+numpy==2.5.4
+pillow==12.3.0

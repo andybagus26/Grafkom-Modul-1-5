@@ -1,0 +1,16 @@
+E4: L(x=0,u=0,w=1) -> R(x=100,u=1,w=9), titik tengah layar x=50
+  (a) naif: u = 0.5000
+  (b) u/w di tengah = 0.055556 (=1/18), 1/w di tengah = 0.555556 (=5/9), u = 0.1000
+
+Render lantai 512x512: piksel yang berbeda naif vs benar = 82839 dari 121894 piksel lantai
+
+Berenang: titik world tetap P=(0.6, 0, -5.0); UV benar = [0.65   0.3636]
+ kamera maju       piksel |            UV naif  galat naif |           UV benar galat benar
+        0.00    (308,292) |    [0.9232 0.86  ]     0.56856 |    [0.6498 0.3616]     0.00000 |
+        0.25    (311,296) |    [0.938  0.8869]     0.59610 |    [0.6515 0.3642]     0.00000 |
+        0.50    (314,301) |    [0.9535 0.9152]     0.62838 |    [0.6514 0.3642]     0.00000 |
+        0.75    (317,307) |    [0.9705 0.9463]     0.66606 |    [0.6499 0.3625]     0.00000 |
+        1.00    (321,313) |    [0.9901 0.982 ]     0.70540 |    [0.6509 0.3634]     0.00000 |
+galat UV maks: naif 0.7054 (= 5.64 kotak catur), benar 5.90e-16
+Kesimpulan: dengan interpolasi naif UV di titik world yang sama BERUBAH saat kamera bergerak (texture berenang); dengan u/w dan 1/w UV-nya tetap (galat ~0).
+tulis out/lab2_e4_panel.png (kiri naif, tengah perspective-correct, kanan selisih)

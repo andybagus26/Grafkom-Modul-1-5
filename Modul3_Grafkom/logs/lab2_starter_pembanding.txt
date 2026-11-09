@@ -1,0 +1,16 @@
+# Angka PEMBANDING dari repo starter (~/Downloads/Module3), dijalankan di salinan scratch, 2026-11-04 14:19
+# BUKAN hasil kode Andy. Dipakai hanya sebagai target pembanding.
+OK   temple frame matches ref/temple_ref.ppm (byte-identical on re-render)
+
+ALL CHECKS PASSED
+model: 180 triangles   framebuffer 512x512
+filled fragments: 273863   depth(ndc) range [0.468, 0.729]
+same size 512x512   PSNR: 69.8 dB   SSIM: 1.000   mean |diff|: 0.0   max |diff|: 33
+== bug: inside-out ==
+evidence: flipped winding + back-face cull: the outward faces are now 'back-facing' and culled, so the render shows the temple's interior surfaces instead. Visible depth differs by 0.082 NDC on average; 31059 vs 33546 fragments.
+SSIM(bad, fixed) = 0.790   PSNR = 14.3 dB   -> large visible difference
+== bug: zfight ==
+evidence: near=1e-3 + 16-bit depth: 2852 pixels wrong vs the float-depth reference (the two quads collapse to one depth code and draw order decides).  near=1.0 + 16-bit depth: only 184 pixels differ -> raising `near` is the fix.
+SSIM(bad, fixed) = 0.779   PSNR = 16.7 dB   -> large visible difference
+== bug: stretched ==
+SSIM(bad, fixed) = 0.594   PSNR = 11.5 dB   -> large visible difference

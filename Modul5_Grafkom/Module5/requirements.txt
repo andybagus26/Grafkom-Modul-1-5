@@ -1,0 +1,15 @@
+# Module 5 -- AI Graphics: NeRF, World Models & AR
+# Pinned to the versions this repo was verified with (README "Verified").
+numpy==2.5.4
+pygltflib==1.16.5        # builds ar_app/assets/*.glb (pure Python)
+matplotlib==3.11.2       # only for tools/figures_m5.py (report figures)
+Pillow==12.3.0           # only for focal_from_exif.py (reads a phone photo's EXIF)
+
+# Optional, heavier: automated headless-browser checks of the AR app
+# (ar_app/verify_ar_app.py, ar_app/occlusion_test.py). Uses the installed
+# Google Chrome if Playwright's own Chromium is not downloaded.
+#   pip install playwright==1.64.1
+#   python -m playwright install chromium     (optional)
+
+# The real tool this module's from-scratch code stands in for (README "Known
+# deviations"):  pip install nerfstudio  + COLMAP + a CUDA GPU

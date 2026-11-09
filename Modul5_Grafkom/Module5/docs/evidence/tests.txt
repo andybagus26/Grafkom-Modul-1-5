@@ -1,0 +1,36 @@
+[ok] E1 pinhole ray, camera-space (unnormalised) (0.8): got=0.8 want=0.8
+[ok] E1 pinhole ray, camera-space (unnormalised) (0.0): got=-0.0 want=0.0
+[ok] E1 pinhole ray, camera-space (unnormalised) (-1.0): got=-1.0 want=-1.0
+[ok] E1 pinhole ray, normalised (0.625): got=0.6246950475544243 want=0.625
+[ok] E1 pinhole ray, normalised (0.0): got=-0.0 want=0.0
+[ok] E1 pinhole ray, normalised (-0.781): got=-0.7808688094430303 want=-0.781
+[ok] E1 normalised ray has unit length: got=0.9999999999999999 want=1.0
+[ok] E2 volume-render weights (0.5): got=0.5 want=0.5
+[ok] E2 volume-render weights (0.25): got=0.25 want=0.25
+[ok] E2 volume-render weights (0.25): got=0.25 want=0.25
+[ok] E2 background weight: got=0.0 want=0.0
+[ok] E2 weights + background sum to 1: got=1.0 want=1.0
+[ok] E2 final pixel colour (0.5): got=0.5 want=0.5
+[ok] E2 final pixel colour (0.25): got=0.25 want=0.25
+[ok] E2 final pixel colour (0.25): got=0.25 want=0.25
+[ok] analytic vs finite-difference gradient over all 176 touched parameters, max relative err = 2.07e-08
+[ok] stable backward == module's v1 backward at ordinary densities (max diff 5.6e-17)
+[ok] near-empty voxels (sigma_raw=-20): stable rel err 1.8e-03 < 1e-2
+[ok] near-empty voxels (sigma_raw=-20): module v1 rel err 6.7e-01 > 0.1 (the latent bug)
+[ok] break on purpose [drop_suffix]: gradient check fails loudly (max rel err 1.00 >> 1e-6)
+[ok] break on purpose [drop_bg]: gradient check fails loudly (max rel err 1.00 >> 1e-6)
+[ok] break on purpose [no_softplus]: gradient check fails loudly (max rel err 0.85 >> 1e-6)
+[ok] 8-view vs 2-view novel-view PSNR gap = 2.71 dB (want > 1.0 dB)
+[ok] crushed gradient: init -8 lowers MSE by 0.00% in 40 iters, init 0 by 77.2%
+[ok] my scene: passage empty, both halves + top step solid red brick
+[ok] my scene: temple and empty space identical to the module scene
+[ok] PPM save/load round trip within half a code value (max err 0.00196)
+[ok] pusaka_temple.glb: 6 meshes, every triangle faces outward (0 bad), height 0.420 m
+[ok] gapura_bentar.glb: 17 meshes, every triangle faces outward (0 bad), height 0.310 m
+[ok] starter stupa winding (p0, p1, apex) reproduced: 4/4 sides face inward; fixed: 0 bad
+[ok] gapura_bentar.json matches make_gapura_glb.py (regenerated, no drift)
+[ok] all 6 candi bentar hotspots sit 1 mm off the face they name
+[ok] both models' bilingual text is complete (name/text in EN and ID for every hotspot)
+[ok] provenance lint: every shipped model ['gapura_bentar.glb', 'pusaka_temple.glb'] has a README provenance line with a licence (missing: [])
+
+ALL CHECKS PASSED (34 ok)

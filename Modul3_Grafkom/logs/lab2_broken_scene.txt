@@ -1,0 +1,36 @@
+
+== BUG: inside-out ==
+  bukti:
+    segitiga di-cull: rusak 76 / 180  vs  diperbaiki 104 / 180
+    fragment: rusak 239431  vs  diperbaiki 220842
+    depth NDC rata-rata di piksel yang sama: rusak 0.6065  vs  diperbaiki 0.5249  (lebih besar = lebih JAUH)
+    signed volume mesh rusak: -2.9764  (negatif = normal CCW menunjuk ke dalam)
+    signed volume mesh diperbaiki: +2.9764  (negatif = normal CCW menunjuk ke dalam)
+  SSIM ke referensi: sebelum 0.789 -> sesudah 1.000   PSNR: sebelum 14.3 dB -> sesudah inf dB
+  tulis out/bug_inside-out_{bad,fixed}.ppm dan out/bug_inside-out_{bad,fixed}_depth.ppm
+
+== BUG: zfight ==
+  bukti:
+    piksel salah warna vs depth float: near=1e-3 -> 20336;  near=1.0 -> 744
+    near=0.001: 40570/40570 piksel (100.0%) kode depth A == B; rentang selisih kode [0, 0]
+    near=1: 1984/40570 piksel (4.9%) kode depth A == B; rentang selisih kode [-10, 10]
+    lebar 1 kode depth 16-bit di jarak 15: near=0.001 -> 3.4332 world unit
+    lebar 1 kode depth 16-bit di jarak 15: near=1 -> 0.0034 world unit
+  tulis logs/lab2_zfight_histogram.txt dan out/bug_zfight_histogram.png
+  SSIM ke referensi: sebelum 0.764 -> sesudah 0.991   PSNR: sebelum 16.4 dB -> sesudah 30.8 dB
+  tulis out/bug_zfight_{bad,fixed}.ppm dan out/bug_zfight_{bad,fixed}_depth.ppm
+
+== BUG: stretched ==
+  bukti (matriks dicetak):
+    M rusak  = S @ R (3x3):
+      [1.229 0.    0.86 ]
+      [0. 1. 0.]
+      [-0.574  0.     0.819]
+      panjang kolom (x,y,z lokal) = [1.356 1.    1.188]   kolom0.kolom2 = +0.587   sudut antara sumbu x dan z lokal = 68.6 deg
+    M benar  = R @ S (3x3):
+      [1.229 0.    0.574]
+      [0. 1. 0.]
+      [-0.86   0.     0.819]
+      panjang kolom (x,y,z lokal) = [1.5 1.  1. ]   kolom0.kolom2 = +0.000   sudut antara sumbu x dan z lokal = 90.0 deg
+  SSIM ke referensi: sebelum 0.735 -> sesudah 1.000   PSNR: sebelum 14.0 dB -> sesudah inf dB
+  tulis out/bug_stretched_{bad,fixed}.ppm dan out/bug_stretched_{bad,fixed}_depth.ppm

@@ -1,0 +1,39 @@
+{
+  "name": "Prambanan-style candi -- schematic floor plan (fallback subject)",
+  "units": "metres",
+  "note": "y is UP in this file (survey convention). plan.mjs flips it to screen y-down. Deterministic committed input; your graded input is a plan you trace of your own building (see Lab 1).",
+  "scale_px_per_m": 22.0,
+  "origin_m": [1.0, 1.0],
+  "polylines": [
+    { "id": "outer_wall", "category": "wall", "closed": true,
+      "points": [[0,0],[24,0],[24,24],[0,24]] },
+    { "id": "inner_platform", "category": "wall", "closed": true,
+      "points": [[6,6],[18,6],[18,18],[6,18]] },
+    { "id": "cella", "category": "cella", "closed": true,
+      "points": [[9,9],[15,9],[15,15],[9,15]] },
+    { "id": "entrance_stair", "category": "stair", "closed": true,
+      "points": [[10.5,3.5],[13.5,3.5],[13.5,6],[10.5,6]] },
+    { "id": "stair_treads", "category": "stair", "closed": false,
+      "points": [[10.5,4.0],[13.5,4.0]] },
+    { "id": "stair_treads_2", "category": "stair", "closed": false,
+      "points": [[10.5,4.5],[13.5,4.5]] },
+    { "id": "stair_treads_3", "category": "stair", "closed": false,
+      "points": [[10.5,5.0],[13.5,5.0]] },
+    { "id": "shrine_sw", "category": "shrine", "closed": true,
+      "points": [[2,2],[5,2],[5,5],[2,5]] },
+    { "id": "shrine_se", "category": "shrine", "closed": true,
+      "points": [[19,2],[22,2],[22,5],[19,5]] },
+    { "id": "shrine_nw", "category": "shrine", "closed": true,
+      "points": [[2,19],[5,19],[5,22],[2,22]] },
+    { "id": "shrine_ne", "category": "shrine", "closed": true,
+      "points": [[19,19],[22,19],[22,22],[19,22]] },
+    { "id": "axis_ns", "category": "axis", "closed": false,
+      "points": [[12,0],[12,24]] },
+    { "id": "axis_ew", "category": "axis", "closed": false,
+      "points": [[0,12],[24,12]] }
+  ],
+  "silhouette": {
+    "id": "footprint", "category": "wall",
+    "points": [[0,0],[24,0],[24,24],[0,24]]
+  }
+}

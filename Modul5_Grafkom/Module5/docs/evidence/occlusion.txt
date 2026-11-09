@@ -1,0 +1,34 @@
+
+[gapura] max |actual - requested| camera azimuth = 2.8 deg
+
+gapura: visible fraction over a full orbit (polar 75 deg, every 5 deg)
+  hotspot   model-viewer   app (mine)   truth (Python)   mv wrong at   app wrong at
+  celah          51.4%        22.2%          22.2%      20 angles      0 angles
+  bata           47.2%        45.8%          47.2%       2 angles      1 angles
+  atap           48.6%        48.6%          48.6%       0 angles      0 angles
+  tangga        100.0%        51.4%          51.4%      34 angles      0 angles
+  skala          47.2%        47.2%          47.2%       0 angles      0 angles
+  nama          100.0%       100.0%         100.0%       0 angles      0 angles
+
+[pusaka] max |actual - requested| camera azimuth = 3.0 deg
+
+pusaka: visible fraction over a full orbit (polar 75 deg, every 5 deg)
+  hotspot   model-viewer   app (mine)   truth (Python)   mv wrong at   app wrong at
+  base           44.4%        44.4%        (no reference: pyramid)
+  body           45.8%        45.8%        (no reference: pyramid)
+  relief         48.6%        48.6%        (no reference: pyramid)
+  roof           48.6%        48.6%        (no reference: pyramid)
+  stupa         100.0%       100.0%        (no reference: pyramid)
+
+'celah' windows (deg):
+  model-viewer  [[180, -125], [-115, 0]]  (51%)
+  app (mine)    [[180, -145], [-35, 0]]  (22%)
+  truth         [[180, -145], [-35, 0]]  (22%)
+
+'tangga' windows (deg):
+  model-viewer  [[85, -125], [-115, 75]]  (100%)
+  app (mine)    [[85, 90], [-90, 75]]  (51%)
+  truth         [[85, 90], [-90, 75]]  (51%)
+
+predicted 'celah' window: [-39, 0] and [180, 219] deg (~22 %)
+wrote out/occlusion.json

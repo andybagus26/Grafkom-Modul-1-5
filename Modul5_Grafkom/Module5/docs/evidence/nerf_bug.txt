@@ -1,0 +1,16 @@
+BUGGY  -- 2 views [0, 20] deg (a 20 deg baseline)
+  iter    0  train MSE = 0.14053
+  iter  499  train MSE = 0.00866
+  mean training-view PSNR = 21.03 dB  (fits what it saw)
+  held-out novel view (190.0 deg) PSNR = 9.30 dB  <-- FLOATERS/COLLAPSE
+
+FIXED  -- 8 views spread every 45 deg around the full ring
+  iter    0  train MSE = 0.13714
+  iter  499  train MSE = 0.01214
+  mean training-view PSNR = 19.49 dB
+  held-out novel view (190.0 deg) PSNR = 12.02 dB
+
+novel-view PSNR improvement from spreading the views out: +2.71 dB
+wrote out/bug_novel_{target,buggy,fixed}.ppm
+
+[ok] spreading the capture around the ring measurably fixes novel-view quality

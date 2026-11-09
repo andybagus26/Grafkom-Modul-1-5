@@ -1,0 +1,28 @@
+# Transkrip reproduksi dari clone bersih, 2026-11-04 14:46 WIB
+$ git clone <repo> clean && cd clean
+$ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+python 3.14.7 numpy 2.5.4 pillow 12.3.0
+$ python make_model.py
+Model berhasil digenerate ke 'mymodel.obj'!
+- Jumlah vertex: 227
+- Jumlah UV: 227
+- Jumlah segitiga: 432
+Tekstur berhasil dibuat ke 'texture.ppm' (Ukuran: 512x512, Format: PPM P6)
+tulis web/mymodel.obj dan web/texture.png (untuk viewer Three.js)
+$ python tests.py
+[PASS] raster vs raytrace (temple, 128x128) PSNR >= 60 dB  ->  PSNR inf dB
+[PASS] raster vs raytrace (mymodel, 128x128) PSNR >= 60 dB  ->  PSNR inf dB
+----------------------------------------------------------------------
+Semua tes lulus.
+exit tests.py = 0
+$ npx serve web
+ INFO  Accepting connections at http://localhost:5173
+ HTTP  11/4/2026 2:46:45 PM ::1 GET /
+ HTTP  11/4/2026 2:46:45 PM ::1 Returned 200 in 24 ms
+GET / -> 200 (3565 byte)
+GET /index.html -> 301 (0 byte)
+GET /viewer.js -> 200 (7831 byte)
+GET /mymodel.obj -> 200 (21785 byte)
+GET /texture.png -> 200 (135402 byte)
+(screenshot halaman dari server ini: model + texture tampil, lihat out/lab3_clean_clone_viewer.png)

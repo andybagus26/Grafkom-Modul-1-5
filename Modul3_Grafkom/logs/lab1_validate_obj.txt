@@ -1,0 +1,38 @@
+== SEBELUM (mymodel.obj lama) ==
+============================================================
+HASIL VALIDASI OBJ: /private/tmp/claude-501/-Users-andybagus-Modul-3-Grafkom/c917d81c-fdf5-4753-9f5b-aba0c54ce889/scratchpad/mymodel_old.obj
+============================================================
+- Jumlah Vertices (v) : 227
+- Jumlah UVs (vt)     : 227
+- Jumlah Normal (vn)  : 0
+- Jumlah Segitiga (f) : 432 [OK]
+- Face non-segitiga   : 0 [OK]
+- Face tanpa UV       : 0 [OK]
+- Bounding Box X      : [-0.800, 0.800] (rentang: 1.600)
+- Bounding Box Y      : [-1.200, 1.200] (rentang: 2.400)
+- Bounding Box Z      : [-0.800, 0.800] (rentang: 1.600)
+- Winding:
+    edge berarah ganda    : 48 [ERROR: winding tidak konsisten]
+    edge tanpa pasangan   : 48 [INFO: mesh punya tepi terbuka]
+    signed volume         : 0.9954 [OK, normal CCW menunjuk keluar]
+------------------------------------------------------------
+STATUS: BELUM VALID. Periksa catatan di atas.
+== SESUDAH perbaikan winding ==
+============================================================
+HASIL VALIDASI OBJ: mymodel.obj
+============================================================
+- Jumlah Vertices (v) : 227
+- Jumlah UVs (vt)     : 227
+- Jumlah Normal (vn)  : 0
+- Jumlah Segitiga (f) : 432 [OK]
+- Face non-segitiga   : 0 [OK]
+- Face tanpa UV       : 0 [OK]
+- Bounding Box X      : [-0.800, 0.800] (rentang: 1.600)
+- Bounding Box Y      : [-1.200, 1.200] (rentang: 2.400)
+- Bounding Box Z      : [-0.800, 0.800] (rentang: 1.600)
+- Winding:
+    edge berarah ganda    : 0 [OK]
+    edge tanpa pasangan   : 0 [OK, mesh tertutup]
+    signed volume         : 2.1850 [OK, normal CCW menunjuk keluar]
+------------------------------------------------------------
+STATUS: VALID. Memenuhi syarat Lab 1 (>= 200 segitiga, UV lengkap, triangulated, winding CCW konsisten).

@@ -1,0 +1,8 @@
+/* Module 2 -- colour-vision-deficiency simulation, toggled from viewer.mjs.
+ * The filters themselves live as <filter> elements in index.html; these
+ * classes just switch them on for the whole viewport. */
+#wrap.cvd-deuteranopia { filter: url(#deuteranopia); }
+#wrap.cvd-protanopia   { filter: url(#protanopia); }
+
+/* a grayscale check is one keystroke away too */
+#wrap.cvd-grayscale { filter: grayscale(1); }

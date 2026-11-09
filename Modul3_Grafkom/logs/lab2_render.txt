@@ -1,0 +1,38 @@
+# Lab 2 render log, 2026-11-04 14:27
+
+== raster3d --scene temple ==
+scene=temple model=data/pusaka_model.obj segitiga=180 frame=512x512 cull=False mip=0
+segitiga digambar=61 di-cull=0 dipotong-near=0 fragment=270281 piksel-terisi=135378
+rentang depth NDC [0.468, 0.729]
+waktu render 0.137 s
+tulis out/temple_raster.ppm dan out/temple_depth.ppm
+== raytrace --scene temple ==
+scene=temple segitiga=180 frame=512x512 piksel-kena=135378/262144
+waktu render 0.942 s
+tulis out/temple_rt.ppm
+== compare raster vs raytrace (temple) ==
+ukuran 512x512  PSNR 69.8 dB  SSIM 1.0000  mean|diff| 0.000  max|diff| 33
+piksel beda 3 (di tepi siluet 0, di bagian dalam 3)
+tulis out/temple_diff_raster_rt.ppm (|A-B| x6)
+
+== raster3d --scene mymodel ==
+scene=mymodel model=mymodel.obj segitiga=432 frame=512x512 cull=False mip=0
+segitiga digambar=362 di-cull=0 dipotong-near=0 fragment=81866 piksel-terisi=59207
+rentang depth NDC [0.937, 0.965]
+waktu render 0.101 s
+tulis out/mymodel_raster.ppm dan out/mymodel_depth.ppm
+== raytrace --scene mymodel ==
+scene=mymodel segitiga=432 frame=512x512 piksel-kena=59207/262144
+waktu render 2.737 s
+tulis out/mymodel_rt.ppm
+== compare raster vs raytrace (mymodel) ==
+ukuran 512x512  PSNR inf dB  SSIM 1.0000  mean|diff| 0.000  max|diff| 0
+piksel beda 0 (di tepi siluet 0, di bagian dalam 0)
+tulis out/mymodel_diff_raster_rt.ppm (|A-B| x6)
+
+== compare raster candi vs ref/temple_ref_512.ppm ==
+ukuran 512x512  PSNR inf dB  SSIM 1.0000  mean|diff| 0.000  max|diff| 0
+piksel beda 0 (di tepi siluet 0, di bagian dalam 0)
+== compare raytrace saya vs raytrace starter ==
+ukuran 512x512  PSNR inf dB  SSIM 1.0000  mean|diff| 0.000  max|diff| 0
+piksel beda 0 (di tepi siluet 0, di bagian dalam 0)
