@@ -1,6 +1,6 @@
-# 2026-11-10 00:40:28 WIB -- clone bersih dari GitHub, macOS 27.2
+# 2026-11-19 20:57:37 WIB -- clone bersih dari GitHub, macOS 27.2.1
 $ git clone https://github.com/andybagus26/Grafkom-Modul-1-5.git
-(commit 9d636a7)
+(commit 39d93c7)
 $ cd Grafkom-Modul-1-5/Modul3_Grafkom && ls web
 index.html
 viewer.js
