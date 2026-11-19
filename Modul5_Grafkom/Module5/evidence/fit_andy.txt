@@ -1,0 +1,9 @@
+[scene=andy, targets from ppm, sigma_raw init 0] Training a 12^3 voxel grid on 8 views (20x16 px, 32 samples/ray), lr=100.0, 800 iters ...
+  iter    0   train MSE = 0.13512
+  iter  200   train MSE = 0.02427
+  iter  400   train MSE = 0.01666
+  iter  600   train MSE = 0.01313
+  iter  799   train MSE = 0.01113
+mean training-view PSNR = 19.76 dB
+held-out novel view (22.5 deg, between two training views): PSNR = 13.83 dB
+wrote out/andy_novel_view_target.ppm, out/andy_novel_view_predicted.ppm, out/andy_novel_view_diff_x4.ppm

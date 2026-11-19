@@ -1,0 +1,46 @@
+# Materi modul dari dosen (hak cipta pengajar) -- tidak ikut repo publik
+Modul1_Grafkom/Module1_ID.pdf
+Modul2_Grafkom/Module2_ID.pdf
+Modul3_Grafkom/Module3_ID.pdf
+Modul3_Grafkom/docs/Module3_ID.pdf
+Modul4_Grafkom/Module4/Module4_ID.pdf
+Modul5_Grafkom/Module5_EN.pdf
+*.zip
+
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.DS_Store
+
+# Laporan dan studi pendahuluan dikumpulkan terpisah (bukan lewat repo); tetap ada di laptop
+Modul1_Grafkom/Module 1-2/laporan/
+Modul2_Grafkom/Module2/laporan/
+Modul3_Grafkom/docs/Laporan_Analisis_Modul3.pdf
+Modul3_Grafkom/docs/Lampiran_Analisis_Modul3.pdf
+Modul3_Grafkom/docs/Lab*_Laporan.md
+Modul3_Grafkom/docs/Studi_Pendahuluan_Modul3.*
+Modul3_Grafkom/docs/figures/
+Modul3_Grafkom/docs/style.css
+Modul3_Grafkom/docs/*.code-workspace
+Modul4_Grafkom/Module4/LAPORAN.md
+Modul4_Grafkom/Module4/docs/
+Modul5_Grafkom/Module5/docs/
+Modul3_Grafkom/tools/build_analysis_pdf.py
+
+# Tidak ada folder docs / materi modul / panduan di repo
+Modul3_Grafkom/docs/
+Modul3_Grafkom/AGENTS_Modul3.md
+Modul3_Grafkom/extract_pdf.py
+Modul3_Grafkom/extract_pure.py
+Modul3_Grafkom/find_lab1.py
+Modul3_Grafkom/find_lab2.py
+Modul3_Grafkom/parse_clean.py
+Modul1_Grafkom/Module 1-2/figures/
+Modul2_Grafkom/Module2/figures/
+# Skrip pembuat gambar studi pendahuluan / laporan (hasilnya juga tidak di repo)
+Modul1_Grafkom/Module 1-2/figures_m1.py
+Modul2_Grafkom/Module2/figures_m2.mjs
+Modul3_Grafkom/tools/figures_studi.py
+Modul4_Grafkom/Module4/tools/figures_studi.py
+Modul5_Grafkom/Module5/tools/figures_m5.py

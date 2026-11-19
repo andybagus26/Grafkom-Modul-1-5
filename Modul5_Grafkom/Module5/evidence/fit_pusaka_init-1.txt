@@ -1,0 +1,9 @@
+[scene=pusaka, targets from ppm, sigma_raw init -1] Training a 12^3 voxel grid on 8 views (20x16 px, 32 samples/ray), lr=100.0, 800 iters ...
+  iter    0   train MSE = 0.09237
+  iter  200   train MSE = 0.02130
+  iter  400   train MSE = 0.01148
+  iter  600   train MSE = 0.00843
+  iter  799   train MSE = 0.00715
+mean training-view PSNR = 21.51 dB
+held-out novel view (22.5 deg, between two training views): PSNR = 20.25 dB
+wrote out/init-1_novel_view_target.ppm, out/init-1_novel_view_predicted.ppm, out/init-1_novel_view_diff_x4.ppm

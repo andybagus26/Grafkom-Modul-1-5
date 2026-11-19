@@ -1,0 +1,8 @@
+== SEBELUM fix winding (mymodel.obj lama) ==
+Render selesai: 0.458 detik
+- Segitiga lolos culling : 186
+- Fragment tertulis     : 41794
+== SESUDAH fix winding ==
+Render selesai: 0.641 detik
+- Segitiga lolos culling : 198
+- Fragment tertulis     : 60136

@@ -1,0 +1,24 @@
+# Lab 3: sumber selisih raster3d.py vs Three.js r128 (Chrome headless, GPU Apple M1 Pro), 2026-11-04 14:41
+== A. tanpa texture, tanpa MSAA (geometri + lighting saja)
+ukuran 512x512  PSNR 52.2 dB  SSIM 1.0000  mean|diff| 0.098  max|diff| 201
+piksel beda 25359 (di tepi siluet 434, di bagian dalam 24925)
+tulis out/mymodel_diff_notex_noaa.ppm (|A-B| x6)
+== B. dengan texture, tanpa MSAA (+ filter texture GPU)
+ukuran 512x512  PSNR 34.7 dB  SSIM 0.9966  mean|diff| 0.933  max|diff| 173
+piksel beda 48443 (di tepi siluet 1149, di bagian dalam 47294)
+tulis out/mymodel_diff_tex_noaa.ppm (|A-B| x6)
+== C. frame deliverable: texture + MSAA
+ukuran 512x512  PSNR 33.8 dB  SSIM 0.9957  mean|diff| 1.070  max|diff| 135
+piksel beda 49542 (di tepi siluet 1789, di bagian dalam 47753)
+tulis out/mymodel_diff_raster_three.ppm (|A-B| x6)
+
+== Rincian selisih eksperimen A (per piksel, kanal maks)
+bagian dalam: |selisih| -> jumlah piksel {1: 24921, 3: 1, 5: 1, 7: 1, 20: 1}
+arah selisih di dalam (three - raster): rata-rata +0.999
+cakupan (piksel objek): raster 59207, three 59205, beda status 2
+max |selisih| di tepi siluet: 201
+
+== Uji hipotesis selisih texture (vs Three.js tanpa MSAA)
+  asli: x=u*(W-1), floor, tanpa mipmap                       PSNR 34.75 dB
+  + konvensi pusat texel GPU x=u*W-0.5                       PSNR 36.75 dB
+  + konvensi pusat texel + mipmap trilinear (seperti GPU)    PSNR 42.31 dB

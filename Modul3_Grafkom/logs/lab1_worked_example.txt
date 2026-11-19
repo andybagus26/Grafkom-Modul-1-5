@@ -1,0 +1,79 @@
+LAB 1: SPACE TRACING - mymodel.obj
+Scene: R_y(30 deg) lalu T(0.0, 0.5, -1.0); kamera eye=(0.0, 1.5, 3.5) target=(0.0, 0.5, -1.0) up=(0.0, 1.0, 0.0);
+       fov_y=60 deg, aspect=512/512, near=0.1, far=20.0
+
+======================================================================
+1. TELUSURAN SATU VERTEX (object -> world -> view -> clip -> NDC -> screen)
+======================================================================
+Vertex #1 dari mymodel.obj (baris 'v' ke-1)
+1. Object (p_obj)   : [0.8000, -1.2000, 0.0000, 1.0000]
+   [tangan] cos30=0.866025, sin30=0.500000
+   [tangan] R_y(30): x'= c*x + s*z = 0.692820; y'= y = -1.200000; z'= -s*x + c*z = -0.400000
+   [tangan] + T(0.0, 0.5, -1.0) -> (0.692820, -0.700000, -1.400000)
+2. World (p_world)  : [0.6928, -0.7000, -1.4000, 1.0000]
+   [tangan] eye - target = [0.000000, 1.000000, 4.500000], |.| = 4.609772
+   [tangan] z_cam = [0.000000, 0.216930, 0.976187]  x_cam = [1.000000, 0.000000, 0.000000]  y_cam = [0.000000, 0.976187, -0.216930]
+   [tangan] p_world - eye = [0.692820, -2.200000, -4.900000]
+   [tangan] view = (x_cam.d, y_cam.d, z_cam.d) = (0.692820, -1.084652, -5.260564)
+3. View (p_view)    : [0.6928, -1.0847, -5.2606, 1.0000]   (z < 0: di depan kamera)
+4. Clip (p_clip)    : [1.2000, -1.8787, 5.1124, 5.2606]   (w_clip = -z_view = 5.2606)
+   lolos uji clip -w <= x,y,z <= w ? True
+5. NDC (p_ndc)      : [0.2281, -0.3571, 0.9718]   (di dalam [-1,1]^3 ? True)
+6. Screen           : x = 314.40 px, y = 347.42 px, depth = 0.9859  (canvas 512x512, y ke bawah)
+   cek silang P@V@M@p = [1.2000, -1.8787, 5.1124, 5.2606]  selisih maks dengan langkah-demi-langkah = 8.88e-16
+
+======================================================================
+2. MEMBACA KOLOM MATRIKS (Lab 1 langkah 4)
+======================================================================
+Matriks model M = T(0, 0.5, -1) @ R_y(30 deg):
+[[ 0.866  0.     0.5    0.   ]
+ [ 0.     1.     0.     0.5  ]
+ [-0.5    0.     0.866 -1.   ]
+ [ 0.     0.     0.     1.   ]]
+- kolom 0: +x lokal model pergi ke arah world [0.8660, 0.0000, -0.5000]
+- kolom 1: +y lokal model pergi ke arah world [0.0000, 1.0000, 0.0000]
+- kolom 2: +z lokal model pergi ke arah world [0.5000, 0.0000, 0.8660]
+- kolom 3: origin model (0,0,0) mendarat di world [0.0000, 0.5000, -1.0000]
+  det(M[:3,:3]) = 1.000000  (+1 = rotasi murni, tidak ada cermin)
+
+Matriks view V = look_at(eye=(0,1.5,3.5), target=(0,0.5,-1), up=(0,1,0)):
+[[ 1.      0.      0.      0.    ]
+ [ 0.      0.9762 -0.2169 -0.705 ]
+ [ 0.      0.2169  0.9762 -3.7421]
+ [ 0.      0.      0.      1.    ]]
+- kolom 0: +x world dilihat kamera sebagai arah view [1.0000, 0.0000, 0.0000]
+- kolom 1: +y world dilihat kamera sebagai arah view [0.0000, 0.9762, 0.2169]
+- kolom 2: +z world dilihat kamera sebagai arah view [0.0000, -0.2169, 0.9762]
+- kolom 3: origin world (0,0,0) berada di view [0.0000, -0.7050, -3.7421]
+  Baris V[:3,:3] = sumbu kamera (kanan, atas, belakang) dinyatakan dalam world:
+    baris 0: x_cam (kanan) = [1.0000, 0.0000, 0.0000]
+    baris 1: y_cam (atas) = [0.0000, 0.9762, -0.2169]
+    baris 2: z_cam (belakang, kamera melihat ke -z_cam) = [0.0000, 0.2169, 0.9762]
+  inv(V) kolom 3 = posisi kamera di world [0.0000, 1.5000, 3.5000]  (harus = eye (0.0, 1.5, 3.5))
+
+Gabungan V@M: origin MODEL di view space = [0.0000, -0.0000, -4.6098]
+  jarak origin model ke kamera = 4.6098  (cek: |eye - (0,0.5,-1)| = 4.6098)
+
+======================================================================
+3. PRESISI DEPTH 1/z (Lab 1 langkah 6a)
+======================================================================
+Jarak view (-z_view) seluruh vertex model: 3.5685 .. 5.6510
+
+  near    far |  depth@zmin  depth@zmax  rentang dipakai |  langkah24b@zmin  langkah24b@zmax  langkah16b@zmax
+  0.10     20 |    0.976861    0.987240         0.010379 |        7.552e-06        1.894e-05        4.848e-03
+  0.01     20 |    0.997697    0.998730         0.001033 |        7.586e-05        1.902e-04        4.870e-02
+  1.00     20 |    0.757653    0.866359         0.108706 |        7.211e-07        1.808e-06        4.629e-04
+  0.10   1000 |    0.972074    0.982402         0.010328 |        7.589e-06        1.903e-05        4.872e-03
+
+Dengan near=0.1, far=20.0: setengah rentang depth [0, 0.5] sudah habis di jarak 0.1990 (= 2nf/(f+n)).
+Interpretasi: depth ~ 1/z, jadi resolusi menumpuk dekat near plane. Near 10x lebih kecil
+membuat langkah depth di jarak model ~10x lebih kasar; far praktis tidak berpengaruh.
+
+======================================================================
+4. CEK HANDEDNESS OTOMATIS (Lab 1 langkah 6d)
+======================================================================
+- det(M[:3,:3]) = +1.000000  -> OK
+- det(V[:3,:3]) = +1.000000  -> OK
+- titik uji (+x,+y dari target) -> layar (285.3, 227.4): kanan=OK, atas=OK
+- segitiga CCW menghadap kamera: area bertanda di NDC = +0.035284 -> OK (front face)
+HASIL CEK HANDEDNESS: LULUS

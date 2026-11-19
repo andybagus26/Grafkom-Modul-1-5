@@ -1,0 +1,18 @@
+============================================================
+HASIL VALIDASI OBJ: mymodel.obj
+============================================================
+- Jumlah Vertices (v) : 227
+- Jumlah UVs (vt)     : 227
+- Jumlah Normal (vn)  : 0
+- Jumlah Segitiga (f) : 432 [OK]
+- Face non-segitiga   : 0 [OK]
+- Face tanpa UV       : 0 [OK]
+- Bounding Box X      : [-0.800, 0.800] (rentang: 1.600)
+- Bounding Box Y      : [-1.200, 1.200] (rentang: 2.400)
+- Bounding Box Z      : [-0.800, 0.800] (rentang: 1.600)
+- Winding:
+    edge berarah ganda    : 0 [OK]
+    edge tanpa pasangan   : 0 [OK, mesh tertutup]
+    signed volume         : 2.1850 [OK, normal CCW menunjuk keluar]
+------------------------------------------------------------
+STATUS: VALID. Memenuhi syarat Lab 1 (>= 200 segitiga, UV lengkap, triangulated, winding CCW konsisten).

@@ -1,0 +1,47 @@
+# Satu situs GitHub Pages untuk Modul 1-5 (index.html di root menautkan semuanya).
+# Aset viewer Modul 3 (web/mymodel.obj, web/texture.png) tidak di-commit: dibuat ulang
+# di sini oleh make_model.py, sama seperti clone bersih.
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Modul 3 -- buat aset viewer
+        working-directory: Modul3_Grafkom
+        run: |
+          pip install -r requirements.txt
+          python make_model.py
+          python tests.py
+      - name: Siapkan isi situs
+        run: |
+          mkdir _site
+          cp -R index.html Modul1_Grafkom Modul2_Grafkom Modul3_Grafkom Modul4_Grafkom Modul5_Grafkom _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

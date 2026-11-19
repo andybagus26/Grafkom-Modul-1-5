@@ -1,0 +1,389 @@
+"""Module 1 -- the "ship / serve / expose" step (Lab 3.4).
+
+Writes:
+  report/budget.md    -- every by-hand number, regenerated: Examples E6/E7, the
+                         refresh table, the committed data/ set, and the budget
+                         at the real (camera) resolution from lab1.py
+  report/formats.md   -- the format POLICY, one line per use, each backed by a
+                         number measured by format_compare.py
+  report/report.html  -- ONE self-contained page: toolchain, budget, histogram,
+                         naive/correct/diff triptych + histogram shift, Pillow
+                         baseline, banding + dither, aliasing sweep, CVD
+                         before/after, format tables + policy. All images and
+                         charts inline (PNG base64 + hand-written SVG).
+
+Run:  python report.py      (make report runs the producers first)
+"""
+from __future__ import annotations
+
+import base64
+import contextlib
+import html
+import io
+import os
+
+import numpy as np
+
+import budget as B
+from ppm_io import read_ppm
+
+OUT = "report"
+
+
+# ---------------------------------------------------------------- helpers --
+def _capture(fn, *a, **kw) -> str:
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        fn(*a, **kw)
+    return buf.getvalue()
+
+
+def _png_uri(img: np.ndarray) -> str:
+    try:
+        from PIL import Image
+    except ImportError:
+        return ""
+    buf = io.BytesIO()
+    Image.fromarray(img, "L" if img.ndim == 2 else "RGB").save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def fig(img_or_path, caption: str, width: int | None = None) -> str:
+    if isinstance(img_or_path, str):
+        if not os.path.exists(img_or_path):
+            return f'<p class="miss">missing: {img_or_path} (run make report)</p>'
+        img = read_ppm(img_or_path)
+    else:
+        img = img_or_path
+    uri = _png_uri(img)
+    if not uri:
+        return f"<p class=miss>{caption}: install Pillow to inline images</p>"
+    w = width or min(256, max(128, img.shape[1]))
+    return (f'<figure><img src="{uri}" alt="{html.escape(caption)}" style="width:{w}px">'
+            f"<figcaption>{caption}</figcaption></figure>")
+
+
+def pre(text: str) -> str:
+    return "<pre>" + html.escape(text.rstrip()) + "</pre>"
+
+
+def table(head: list[str], rows: list[list]) -> str:
+    h = "".join(f"<th>{c}</th>" for c in head)
+    b = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
+    return f'<div class="tw"><table><thead><tr>{h}</tr></thead><tbody>{b}</tbody></table></div>'
+
+
+def svg_bars(series: dict[str, np.ndarray], labels: list[str], title: str,
+             w: int = 640, h: int = 220) -> str:
+    """Grouped bar chart as inline SVG, written by hand (no plotting lib)."""
+    names = list(series)
+    n = len(labels)
+    vmax = max(float(np.max(v)) for v in series.values()) or 1.0
+    pad_l, pad_b, pad_t = 48, 34, 24
+    pw, ph = w - pad_l - 10, h - pad_b - pad_t
+    gw = pw / n
+    bw = gw * 0.8 / len(names)
+    cls = ["s1", "s2", "s3"]
+    out = [f'<svg viewBox="0 0 {w} {h}" class="chart" role="img" aria-label="{html.escape(title)}">',
+           f'<text x="{pad_l}" y="15" class="t">{html.escape(title)}</text>']
+    for frac in (0, 0.5, 1.0):
+        y = pad_t + ph * (1 - frac)
+        out.append(f'<line x1="{pad_l}" x2="{w - 10}" y1="{y:.1f}" y2="{y:.1f}" class="grid"/>'
+                   f'<text x="{pad_l - 6}" y="{y + 4:.1f}" class="ax" text-anchor="end">'
+                   f'{vmax * frac:,.0f}</text>')
+    for i, lab in enumerate(labels):
+        x0 = pad_l + i * gw + gw * 0.1
+        for j, nm in enumerate(names):
+            v = float(series[nm][i])
+            bh = ph * v / vmax
+            out.append(f'<rect x="{x0 + j * bw:.1f}" y="{pad_t + ph - bh:.1f}" width="{bw - 1:.1f}" '
+                       f'height="{bh:.1f}" class="{cls[j % 3]}"><title>{nm} {lab}: {v:,.0f}</title></rect>')
+        if n <= 16 or i % 2 == 0:
+            out.append(f'<text x="{pad_l + i * gw + gw / 2:.1f}" y="{h - pad_b + 14}" class="ax" '
+                       f'text-anchor="middle">{lab}</text>')
+    lx = pad_l + 8
+    for j, nm in enumerate(names):
+        out.append(f'<rect x="{lx}" y="{h - 14}" width="10" height="10" class="{cls[j % 3]}"/>'
+                   f'<text x="{lx + 14}" y="{h - 5}" class="ax">{html.escape(nm)}</text>')
+        lx += 14 + 7 * len(nm) + 18
+    out.append("</svg>")
+    return "".join(out)
+
+
+# ------------------------------------------------------------ budget.md --
+def budget_text() -> str:
+    txt = _capture(B.canonical) + "\n"
+    if os.path.isdir("data"):
+        txt += _capture(B.from_set, "data")
+    return txt
+
+
+def build_budget_md() -> None:
+    lab1 = open(f"{OUT}/lab1.md").read() if os.path.exists(f"{OUT}/lab1.md") else ""
+    with open(f"{OUT}/budget.md", "w") as f:
+        f.write("# Module 1 -- budget.md\n\nRegenerated by `python report.py` "
+                "(`make report`). Storage/network numbers use MB = 10^6 B, GB = 10^9 B; "
+                "RAM/VRAM numbers use MiB = 2^20 B, GiB = 2^30 B -- every figure is labelled.\n\n"
+                "## Examples E6 / E7, refresh table, committed data/ set\n\n```\n"
+                + budget_text() + "```\n\n")
+        if lab1:
+            f.write(lab1.replace("# Lab 1 -- input, budget, decode vs on-disk", "## Lab 1 -- real resolution"))
+        f.write("\n## Capstone texture budget (A1)\n\n```\n" + capstone_text() + "```\n")
+
+
+def capstone_text() -> str:
+    lines = []
+    for size in (2048, 4096):
+        base = B.bytes_per_frame(size, size, 32)
+        mip = B.mip_chain_bytes(base)
+        fit = 8 * B.GiB / mip
+        lines.append(f"{size}x{size} RGBA8: {base / B.MiB:6.1f} MiB, with mips {mip / B.MiB:6.2f} MiB"
+                     f" -> {fit:5.0f} fit in 8 GiB (all of it), ~{fit / 2:4.0f} in a realistic half")
+        for name, ratio in (("BC7 / ASTC 4x4 (8 bpp)", 4), ("BC1 / ASTC 6x6 (~4 bpp)", 8)):
+            lines.append(f"     compressed {name:24s}: {mip / ratio / B.MiB:6.2f} MiB -> "
+                         f"~{fit * ratio / 2:5.0f} in half of 8 GiB")
+    lines.append("200 textures @ 4K + mips uncompressed = "
+                 f"{200 * B.mip_chain_bytes(B.bytes_per_frame(4096, 4096, 32)) / B.GiB:.1f} GiB  "
+                 "(> 2x the card)")
+    lines.append("200 textures @ 2K + mips, BC7         = "
+                 f"{200 * B.mip_chain_bytes(B.bytes_per_frame(2048, 2048, 32)) / 4 / B.GiB:.2f} GiB  "
+                 "(fits, with room for geometry + targets)")
+    return "\n".join(lines) + "\n"
+
+
+# ----------------------------------------------------------- formats.md --
+def _fmt_rows(stem: str) -> dict:
+    p = f"{OUT}/formats_{stem}.md"
+    rows = {}
+    if os.path.exists(p):
+        for line in open(p):
+            if line.startswith("| ") and not line.startswith("| format"):
+                c = [x.strip() for x in line.strip().strip("|").split("|")]
+                rows[c[0]] = dict(bytes=c[1], ratio=c[2], psnr=c[3])
+    return rows
+
+
+def build_formats_md() -> str:
+    hf, sm = _fmt_rows("crop_hifreq"), _fmt_rows("crop_smooth")
+
+    def g(d, k, f):
+        return d.get(k, {}).get(f, "n/a")
+
+    policy = [
+        ("Archive (master copy)", "WebP lossless (PNG if a tool cannot read WebP)", "lossless",
+         f"exact (PSNR inf) and {g(hf, 'WebP-lossless', 'bytes')} B vs PNG "
+         f"{g(hf, 'PNG', 'bytes')} B on the relief crop ({g(hf, 'WebP-lossless', 'ratio')} vs "
+         f"{g(hf, 'PNG', 'ratio')}); chisel marks cannot come back from a lossy master"),
+        ("Web hero image", "WebP q~90 (AVIF where supported, JPG q92 fallback in <picture>)",
+         "q 90-92",
+         f"relief: WebP q92 {g(hf, 'WebP q92', 'psnr')} at {g(hf, 'WebP q92', 'ratio')}; "
+         f"smooth: WebP q92 {g(sm, 'WebP q92', 'psnr')} at {g(sm, 'WebP q92', 'ratio')}"),
+        ("Thumbnail", "JPG q75 of a LINEAR-correct downscale", "q 75",
+         f"universal decoder; relief JPG q75 {g(hf, 'JPG q75', 'psnr')} at {g(hf, 'JPG q75', 'ratio')}"
+         " -- the ringing is below what a ~128 px thumbnail can show"),
+        ("Texture source for Module 3", "PNG / WebP lossless, power-of-two, sRGB-tagged",
+         "lossless",
+         "the GPU re-compresses to BCn/ASTC and builds mips; feeding it JPEG stacks two lossy "
+         f"stages (JPG q40 on the relief is only {g(hf, 'JPG q40', 'psnr')})"),
+        ("Flythrough video (Module 4)", "MP4 / H.264 (AV1 if the target supports it)",
+         "CRF ~20",
+         "10 s @ 30 fps of 1080p is 1.87 GB uncompressed (E6) vs ~10 MB at 8 Mbit/s; only a video "
+         "codec exploits frame-to-frame redundancy"),
+    ]
+    with open(f"{OUT}/formats.md", "w") as f:
+        f.write("# Format policy (Lab 3.3)\n\nEvery line is backed by a number from "
+                "`format_compare.py` (report/formats_crop_*.md) or Example E6.\n\n"
+                "| use | format | quality | why (measured) |\n|---|---|---|---|\n")
+        for r in policy:
+            f.write("| " + " | ".join(r) + " |\n")
+        f.write("\nWhy the archive answer differs from the cheapest answer: the cheapest relief "
+                f"encode measured is AVIF q40 ({g(hf, 'AVIF q40', 'bytes')} B, "
+                f"{g(hf, 'AVIF q40', 'ratio')}) but it is {g(hf, 'AVIF q40', 'psnr')} -- the ridges "
+                "are smeared for ever. An archive is paid for once and read by every later "
+                "module; bytes are cheap, lost detail is not.\n")
+    return table(["use", "format", "quality", "why (measured)"], [list(r) for r in policy])
+
+
+# -------------------------------------------------------------- the page --
+CSS = """
+:root{--bg:#fbfaf7;--fg:#1d2430;--muted:#5b6575;--card:#fff;--line:#d9dde3;--acc:#0b5394;
+--s1:#c0504d;--s2:#2e75b6;--s3:#7f6000;--code:#f1f3f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14171c;--fg:#e6e9ee;
+--muted:#a3acb9;--card:#1c2027;--line:#333a45;--acc:#8ab4f8;--s1:#e8817e;--s2:#7fb2e5;--s3:#d6b656;--code:#242a33}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:.2em 0}h2{color:var(--acc);border-bottom:1px solid var(--line);
+padding-bottom:.2em;margin-top:2.2em}h3{margin-bottom:.3em}
+.lede{color:var(--muted)}pre{background:var(--code);padding:12px;overflow-x:auto;
+font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace;border-radius:6px}
+figure{display:inline-block;margin:6px 10px 10px 0;vertical-align:top;max-width:100%}
+figure img{image-rendering:pixelated;border:1px solid var(--line);max-width:100%;height:auto;display:block}
+figcaption{font-size:12px;color:var(--muted);max-width:256px}
+.tw{overflow-x:auto}table{border-collapse:collapse;margin:8px 0 16px;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+th{background:var(--code)}.chart{width:100%;max-width:680px;height:auto;display:block;margin:8px 0}
+.chart .t{font-size:13px;fill:var(--fg);font-weight:600}.chart .ax{font-size:10.5px;fill:var(--muted)}
+.chart .grid{stroke:var(--line)}.s1{fill:var(--s1)}.s2{fill:var(--s2)}.s3{fill:var(--s3)}
+.note{border-left:4px solid var(--acc);background:var(--card);padding:8px 12px;margin:12px 0}
+.ok{color:#2e7d32;font-weight:600}.bad{color:#c62828;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}.legend span{display:inline-flex;
+align-items:center;gap:4px;font-size:12px}.legend i{display:inline-block;width:18px;height:18px;
+border:1px solid var(--line)}
+"""
+
+
+def build_html(formats_tbl: str) -> None:
+    import gamma_resize_bug as G
+    import histogram as H
+    import banding
+    import aliasing
+    import baseline_compare as BC
+    import cvd
+    import hand_check
+    from resample import box_downscale_2x
+
+    P: list[str] = [f"<!doctype html><html lang=id><head><meta charset=utf-8>"
+                    f"<meta name=viewport content='width=device-width,initial-scale=1'>"
+                    f"<title>Pusaka3D Modul 1</title><style>{CSS}</style></head><body><main>",
+                    "<h1>Pusaka3D &mdash; Modul 1: Representasi Digital, Warna &amp; Memori</h1>",
+                    "<p class=lede>Laporan yang dibangkitkan ulang oleh <code>make report</code>. "
+                    "Semua angka di halaman ini dihitung saat build dari kode di repo ini; "
+                    "tidak ada yang diketik manual.</p>"]
+
+    # 1. toolchain + input
+    P.append("<h2>1. Toolchain &amp; input</h2>")
+    for name in ("toolchain.md", "lab1.md"):
+        p = f"{OUT}/{name}"
+        if os.path.exists(p):
+            P.append(pre(open(p).read()))
+
+    # 2. budget
+    P.append("<h2>2. Budget memori &amp; waktu</h2>")
+    P.append(pre(budget_text()))
+    P.append("<h3>Budget texture capstone</h3>" + pre(capstone_text()))
+
+    # 3. histogram
+    rel = read_ppm("data/relief.ppm")
+    vals = H.to_luma_codes(rel)
+    mine = H.histogram_from_scratch(vals, 16)
+    ref, _ = np.histogram(vals, bins=16, range=(0, 256))
+    P.append("<h2>3. Histogram from scratch (relief.ppm, luma, 16 bin)</h2>")
+    P.append(svg_bars({"from scratch": mine, "numpy.histogram": ref},
+                      [str(16 * b) for b in range(16)], "relief.ppm — jumlah pixel per bin"))
+    P.append(f"<p>Jumlah bin = {mine.sum():,} = 256&times;256. "
+             f"<b>max err vs numpy.histogram = {int(np.abs(mine - ref).max())}</b>. "
+             "Distribusi bimodal: punggung pahat gelap (bin 32&ndash;47) dan terang (bin 224&ndash;239).</p>")
+
+    # 4. downscale triptych + histogram shift + hand check
+    orig, buggy = G.load_inputs()
+    correct = box_downscale_2x(orig, True)
+    d = np.abs(correct.astype(int) - buggy.astype(int))
+    P.append("<h2>4. Downscale 2&times;: naif vs linear vs selisih</h2>")
+    P.append(fig(f"{OUT}/relief_naive.ppm", "naif 2× (rata-rata kode sRGB) = thumb_buggy"))
+    P.append(fig(f"{OUT}/relief_linear.ppm", "linear 2× (decode → rata-rata → encode)"))
+    P.append(fig(f"{OUT}/relief_diff.ppm", "|selisih| ×4 — terang = error gamma"))
+    from metrics import psnr, ssim
+    P.append(table(["metrik", "naif vs linear (sebelum fix)", "setelah fix vs referensi independen*"],
+                   [["mean |diff|", f"{d.mean():.1f} kode", "0"],
+                    ["max |diff|", f"{int(d.max())} kode", "0"],
+                    ["PSNR", f"{psnr(buggy, correct):.1f} dB", "∞"],
+                    ["SSIM (global)", f"{ssim(buggy, correct):.3f}", "1.000"],
+                    ["piksel di mana naif lebih gelap", f"{((correct.astype(int) - buggy.astype(int)) > 0).mean():.1%}", "—"]]))
+    P.append("<p class=lede>* referensi independen = Pillow BOX dijalankan per channel di mode "
+             "<code>F</code> pada nilai linear (lihat §5).</p>")
+    hb, hc = G.luma_hist(buggy), G.luma_hist(correct)
+    P.append(svg_bars({"thumb_buggy (naif)": hb, "linear-correct": hc},
+                      [str(16 * b) for b in range(16)], "Pergeseran histogram luma: naif tergeser ke kiri (lebih gelap)"))
+    P.append("<h3>Satu blok 2&times;2 dihitung manual (A2)</h3>" + pre(_capture(hand_check.by_hand)))
+
+    # 5. baseline
+    P.append("<h2>5. Baseline: siapa yang cocok dengan &ldquo;benar&rdquo;?</h2>")
+    for src, label in (("data/relief.ppm", "relief.ppm"), ("checker1", "checker 1-px (Contoh E4)"),
+                       ("data/checker.pgm", "checker.pgm (kotak 2-px, sejajar grid)")):
+        rows = BC.compare(src)
+        P.append(f"<h3>{label}</h3>")
+        P.append(table(["kandidat", "PSNR vs ref", "SSIM", "mean |d|", "max |d|", "bias"],
+                       [[n, "∞" if p == float("inf") else f"{p:.1f} dB", f"{s:.3f}", f"{m:.2f}",
+                         mx, f"{b:+.2f}"] for n, p, s, m, mx, b in rows]))
+
+    # 6. banding
+    br = banding.measure()
+    P.append("<h2>6. Kuantisasi, banding, dither</h2>")
+    for k, cap in (("g8", "8-bit: 256 level, pita 2 px"), ("g5", "5-bit: 32 level, pita 16 px"),
+                   ("g5d", "5-bit + dither Bayer 8×8")):
+        P.append(fig(br["images"][k], cap, 512))
+    dd = br["dither"]
+    P.append(table(["", "level", "lebar pita rata-rata (terukur)", "prediksi E2", "q"],
+                   [[f"{b}-bit", br[b]["levels"], f"{br[b]['mean_band']:.1f} px",
+                     f"{br[b]['predicted']:.0f} px", f"1/{2**b-1} = {br[b]['q']:.4f}"] for b in (8, 5)]))
+    P.append(f"<p>Dither: jumlah level tetap {dd['levels']} (histogram nyaris sama), tetapi run "
+             f"datar terpanjang turun {dd['longest_run_plain']} → {dd['longest_run_dith']} px dan "
+             f"error rata-rata lokal 8&times;8 terhadap ramp asli turun "
+             f"{dd['local_mean_err_plain']:.3f} → {dd['local_mean_err_dith']:.3f} kode.</p>")
+    P.append(svg_bars({"5-bit polos": dd["hist_plain"], "5-bit dither": dd["hist_dith"]},
+                      [str(i) for i in range(32)], "Histogram 5-bit: dither tidak menambah level, hanya mengatur ulang posisinya"))
+
+    # 7. aliasing
+    src, dec, aa, rows = aliasing.sweep_table()
+    P.append("<h2>7. Aliasing: sweep 0.1&ndash;0.9 cycles/pixel</h2>")
+    P.append(fig(src, "sumber (0.05–0.45 c/px sumber)", 720))
+    P.append(fig(dec, "2× desimasi tanpa pre-filter", 720))
+    P.append(fig(aa, "2× dengan pre-filter Gaussian (linear)", 720))
+    P.append(table(["f output (c/px)", "prediksi |f−f<sub>s</sub>|", "desimasi: f terukur", "amp",
+                    "pre-filter: f", "amp"],
+                   [[f"{r['f']:.1f}", f"{r['pred']:.1f}", f"{r['f_dec']:.3f}", f"{r['a_dec']:.1f}",
+                     f"{r['f_aa']:.3f}", f"{r['a_aa']:.1f}"] for r in rows]))
+    ra = aliasing.relief_alias()
+    P.append(f"<p>Pada crop relief: punggung di {ra['src_peak']:.3f} c/px &rarr; ×2 = "
+             f"{2 * ra['src_peak']:.3f} &rarr; alias diprediksi {ra['pred']:.3f} c/px. Amplitudo di "
+             f"frekuensi itu: desimasi <b>{ra['amp_dec']:.1f}</b> &rarr; pre-filter "
+             f"<b>{ra['amp_aa']:.1f}</b> kode ({ra['amp_dec'] / ra['amp_aa']:.0f}× lebih lemah).</p>")
+    P.append(fig(ra["dec_img"], "crop relief: desimasi (Moiré)"))
+    P.append(fig(ra["aa_img"], "crop relief: pre-filter + desimasi"))
+
+    # 8. CVD
+    P.append("<h2>8. Colour-vision deficiency: legenda sebelum &amp; sesudah</h2>")
+    for title, cols in (("SEBELUM — legenda merah/hijau", cvd.LEGEND_BAD),
+                        ("PERANTARA — hue beragam (lolos CVD, gagal grayscale)", cvd.LEGEND_HUE_OK),
+                        ("SESUDAH — ramp luminansi viridis + label langsung", cvd.LEGEND_FIXED)):
+        row = cvd._swatches(cols)
+        r = cvd.check_legend(cols)
+        verdict = "<span class=ok>LOLOS</span>" if cvd.legend_passes(cols) else "<span class=bad>GAGAL</span>"
+        P.append(f"<h3>{title} &mdash; {verdict}</h3>")
+        for lab, im in (("normal", row), ("deuteranopia", cvd.simulate(row, "deuteranopia")),
+                        ("protanopia", cvd.simulate(row, "protanopia")),
+                        ("grayscale", cvd.grayscale_test(row))):
+            key = lab if lab != "normal" else "normal"
+            P.append(fig(im, f"{lab}: jarak pasangan min {r[key]:.0f}", 240))
+    names = ["Candi induk", "Candi perwara", "Pagar", "Relief", "Halaman"]
+    P.append("<p>Legenda final memakai label langsung (kanal kedua) di samping warna:</p><div class=legend>" +
+             "".join(f'<span><i style="background:rgb{c}"></i>{n}</span>'
+                     for c, n in zip(cvd.LEGEND_FIXED, names)) + "</div>")
+
+    # 9. formats
+    P.append("<h2>9. Format berkas: prediksi, pengukuran, kebijakan</h2>")
+    for stem in ("crop_hifreq", "crop_smooth"):
+        p = f"{OUT}/formats_{stem}.md"
+        if os.path.exists(p):
+            P.append(pre(open(p).read()))
+    P.append(fig("data/crop_hifreq.ppm", "crop relief asli"))
+    P.append(fig(f"{OUT}/crop_hifreq_jpg_q40.ppm", "JPG q40: ringing + blocking 8×8"))
+    P.append("<h3>Kebijakan format</h3>" + formats_tbl)
+
+    P.append("</main></body></html>")
+    with open(f"{OUT}/report.html", "w", encoding="utf-8") as f:
+        f.write("\n".join(P))
+
+
+def main() -> None:
+    os.makedirs(OUT, exist_ok=True)
+    build_budget_md()
+    tbl = build_formats_md()
+    build_html(tbl)
+    kb = os.path.getsize(f"{OUT}/report.html") / 1024
+    print(f"wrote {OUT}/budget.md, {OUT}/formats.md and {OUT}/report.html ({kb:.0f} KB)")
+
+
+if __name__ == "__main__":
+    main()

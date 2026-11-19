@@ -1,0 +1,33 @@
+
+--- Lab 1 ---
+[PASS] mymodel.obj valid (>=200 segitiga, UV, triangulated, winding CCW konsisten)
+[PASS] object->world = hitungan tangan  ->  (0.69282, -0.7, -1.4)
+[PASS] world->view = hitungan tangan  ->  (0.69282, -1.08465, -5.26056)
+[PASS] w_clip == -z_view  ->  w=5.260564
+[PASS] cek handedness scene Lab 1 lulus
+[PASS] uji negatif: model dicerminkan terdeteksi
+[PASS] uji negatif: kamera dicerminkan terdeteksi
+[PASS] uji negatif: viewport tanpa flip y terdeteksi
+
+--- Lab 2 ---
+[PASS] E1  (2,3,4) -T(1,0,-1)-> lalu Ry(90) = (3,3,-3)  ->  (3, 3, -3)
+[PASS] E1  bagi perspektif d=2 -> (2,2)  ->  (2, 2)
+[PASS] E1  urutan terbalik (Ry dulu, lalu T) = (5,3,-3), titik berbeda  ->  (5, 3, -3)
+[PASS] E2  kamera +1 di x == model -1 di x  ->  kamera (4, 0, 0)  model (4, 0, 0)
+[PASS] E3  n=1,f=9: z=-1 -> -1, z=-9 -> +1, z=-3 -> 0.5  ->  A=-1.25 B=-2.25  ndc z = (-1, 1, 0.5)
+[PASS] E4  u di tengah layar: naif 0.5, perspective-correct 0.1  ->  naif 0.5000  benar 0.1000
+[PASS] E5  depth barycentric 0.20/0.50/0.90 di (.25,.25,.5) = 0.625  ->  0.6250
+[PASS] Modul 2: edge(A,B,C)=28; (3,3) di dalam; (5,5),(1,4) di luar  ->  area=28, (3,3)->[12, 8, 8], (5,5)->[-4, 16, 16], (1,4)->[19, -6, 15]
+[PASS] Modul 2: barycentric di (3,3) berjumlah 1  ->  (0.4286, 0.2857, 0.2857)
+[PASS] near clip: 1 vertex di belakang kamera -> 2 segitiga, semua w > 0  ->  2 potongan, w min 1.000
+[PASS] near clip: render tidak 'mencoreng' ke atas layar (hanya separuh bawah terisi)  ->  baris terisi 41..59
+[PASS] Contoh terpandu (aspect=1 seperti modul): clip (5.196,5.196,9.408,11), layar (589,158), depth 0.855  ->  clip (5.196, 5.196, 9.408, 11) ndc (0.4724, 0.4724, 0.8553) layar (589.0, 158.3)
+[PASS] Contoh terpandu dengan aspect benar 4/3: x layar 541.7 (y tetap 158.3)  ->  layar (541.7, 158.3)
+[PASS] 1 segitiga datar: mengisi region wajar, depth seragam  ->  1006 piksel, depth 0.0204
+[PASS] z-buffer: dua segitiga bertumpuk, urutan gambar depan dulu: belakang tidak pernah menang di depan  ->  piksel biru di depth depan = 0
+[PASS] z-buffer: dua segitiga bertumpuk, urutan gambar belakang dulu: belakang tidak pernah menang di depan  ->  piksel biru di depth depan = 0
+[PASS] frame candi 160x160 vs ref/temple_ref.ppm (PSNR >= 60 dB)  ->  PSNR inf dB, 0 piksel beda
+[PASS] raster vs raytrace (temple, 128x128) PSNR >= 60 dB  ->  PSNR inf dB
+[PASS] raster vs raytrace (mymodel, 128x128) PSNR >= 60 dB  ->  PSNR inf dB
+----------------------------------------------------------------------
+Semua tes lulus.

@@ -1,0 +1,30 @@
+scene: mymodel.obj + lantai = 434 segitiga, 512x512
+
+== Frame time (median) ==
+  raster3d.py tanpa shadow             109.0 ms
+  raster3d.py + shadow map 1024        155.1 ms
+  raytrace.py tanpa shadow            2751.1 ms
+  raytrace.py + shadow ray            5826.9 ms
+  Three.js r128 (GPU, tanpa shadow)      0.60 ms   [ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)]
+  rasio raytrace/raster tanpa shadow  : 25.2x
+  rasio raytrace/raster dengan shadow : 37.6x
+  biaya shadow: raster x1.42, raytrace x2.12
+  raster NumPy / Three.js GPU         : 182x
+
+== Kualitas (raytrace + shadow ray dianggap kebenaran) ==
+  tanpa shadow  raster vs raytrace: PSNR inf dB
+    shadow map   bias |     PSNR    SSIM  piksel beda  raster terlalu gelap  raster terlalu terang
+           512    0.0 |     17.5  0.9121        61164                 60341                     95
+           512    0.5 |     32.0  0.9973         6734                  5924                    123
+           512    1.5 |     41.0  0.9997         1711                  1012                    123
+           512    4.0 |     42.5  0.9998          558                   167                    123
+          1024    0.0 |     17.5  0.9121        61188                 60396                     42
+          1024    0.5 |     32.2  0.9974         6663                  5938                     51
+          1024    1.5 |     43.0  0.9998         1656                  1057                     51
+          1024    4.0 |     45.5  0.9999          538                   134                     52
+          2048    0.0 |     17.5  0.9124        61008                 60303                     26
+          2048    0.5 |     32.4  0.9975         6568                  5897                     35
+          2048    1.5 |     44.0  0.9998         1586                  1014                     35
+          2048    4.0 |     47.9  0.9999          484                    97                     35
+
+tulis out/lab3_shadow_panel.png (bias 0 | bias 1.5 | raytrace | selisih x4) dan out/lab3_shadow_zoom.png

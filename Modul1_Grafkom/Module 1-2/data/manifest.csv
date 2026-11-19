@@ -1,0 +1,22 @@
+filename,width,height,channels,on_disk_bytes,note
+patch8.pgm,8,8,1,75,Example E1 running patch; mean 54 by hand
+gradient.ppm,512,64,3,98318,8-bit black->white ramp; 2 px bands (E2a)
+gradient5.pgm,512,64,1,32782,5-bit ramp; 16 px bands (E2b)
+checker.pgm,256,256,1,65551,2x2 b/w checker; gamma-blend downscale demo
+silhouette.pgm,256,256,1,65551,stepped-temple silhouette; pure geometry
+silhouette_flip.pgm,256,256,1,65551,"silhouette, horizontal flip"
+relief.ppm,256,256,3,196623,procedural sandstone relief; high-frequency ridges
+relief_rot90.ppm,256,256,3,196623,relief rotated 90 deg
+crop_smooth.ppm,118,118,3,41787,smooth sub-region for format_compare
+crop_hifreq.ppm,128,128,3,49167,busy relief crop for format_compare
+thumb_buggy.ppm,128,128,3,49167,relief 2x downscaled IN sRGB SPACE (bug artifact)
+photo_00.ppm,256,256,3,196623,stand-in angle shot 0 of one subject
+photo_01.ppm,256,256,3,196623,stand-in angle shot 1 of one subject
+photo_02.ppm,256,256,3,196623,stand-in angle shot 2 of one subject
+photo_03.ppm,256,256,3,196623,stand-in angle shot 3 of one subject
+photo_04.ppm,256,256,3,196623,stand-in angle shot 4 of one subject
+photo_05.ppm,256,256,3,196623,stand-in angle shot 5 of one subject
+photo_06.ppm,256,256,3,196623,stand-in angle shot 6 of one subject
+photo_07.ppm,256,256,3,196623,stand-in angle shot 7 of one subject
+photo_08.ppm,256,256,3,196623,stand-in angle shot 8 of one subject
+photo_09.ppm,256,256,3,196623,stand-in angle shot 9 of one subject

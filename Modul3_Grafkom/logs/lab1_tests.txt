@@ -1,0 +1,11 @@
+[PASS] mymodel.obj valid (>=200 segitiga, UV, triangulated, winding CCW konsisten)
+[PASS] object->world cocok hitungan tangan (0.693, -0.700, -1.400)
+[PASS] world->view cocok hitungan tangan (0.693, -1.085, -5.261)
+[PASS] w_clip == -z_view
+[PASS] rantai P@V@M sama dengan langkah demi langkah
+[PASS] cek handedness scene Lab 1 lulus
+[PASS] uji negatif: model dicerminkan (scale x=-1) terdeteksi
+[PASS] uji negatif: basis kamera left-handed (cermin di view) terdeteksi
+[PASS] uji negatif: viewport tanpa flip y terdeteksi
+------------------------------------------------------------
+Semua tes lulus.

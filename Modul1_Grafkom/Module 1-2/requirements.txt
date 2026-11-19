@@ -1,0 +1,9 @@
+# Module 1 -- Digital Representation, Colour & Memory
+# From-scratch work is NumPy only. Pillow is used ONLY as (a) the single
+# reference call each primitive is matched against and (b) the JPG/PNG/WebP/AVIF
+# encoder for the size measurement in format_compare.py / lab1.py.
+#
+# Locked to the versions of the verified clean-machine run (README "Verified").
+# Pillow 12.3.0 was also verified and gives byte-identical report numbers.
+numpy==2.5.4
+pillow==13.0.0

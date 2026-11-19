@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.DS_Store
+# render mentah (dibuat ulang oleh run_all_labs.py); panel PNG untuk laporan tetap di-commit
+out/*.ppm
+# aset web turunan (dibuat oleh make_model.py, juga di workflow Pages)
+web/mymodel.obj
+web/texture.png
+web/*_three.ppm
+# materi modul (hak cipta pengajar), tidak ikut repo publik
+Module3_ID.pdf
+web/*_200k.obj
+out/*_200k*
+# teks hasil ekstraksi PDF modul (materi pengajar)
+logs/modul_extracted_pure.txt
+logs/extracted_pdf.txt

@@ -1,0 +1,10 @@
+browser: Google Chrome (channel=chrome) 156.0.8078.74
+[ok] model-viewer element exists
+[ok] model reported loaded
+[ok] model reported visible (rendered)
+[ok] a real WebGL <canvas> was created inside model-viewer
+[ok] 5 hotspots injected from hotspots.json (found 5)
+[ok] AR launch button present
+[ok] clicking a hotspot opens the info panel (title='Finial (stupa / puncak)')
+[FAIL] language toggle re-renders the OPEN panel without a re-tap ('Finial (stupa / puncak)' -> 'Finial (stupa / puncak)')
+STOPPED: failed: language toggle re-renders the OPEN panel without a re-tap ('Finial (stupa / puncak)' -> 'Finial (stupa / puncak)')

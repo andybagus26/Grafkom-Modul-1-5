@@ -1,0 +1,8 @@
+# Module 4 -- Animation, Kinematics & Game Engine
+# fk.py / ik.py / spline.py / quaternion.py / foot_slide_bug.py / tests.py use
+# only the Python 3.10+ standard library (math, json, dataclasses) -- no
+# third-party dependencies for the from-scratch code itself.
+#
+# Only needed if you also regenerate ../../figures/make_figures_m4.py locally:
+matplotlib>=3.7
+numpy>=1.24

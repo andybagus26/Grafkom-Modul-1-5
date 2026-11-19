@@ -1,0 +1,18 @@
+$ python -m venv .venv && . .venv/bin/activate
+$ pip install -r requirements.txt
+
+matplotlib        3.11.2
+numpy             2.5.4
+pillow            12.3.0
+pygltflib         1.16.5
+$ cd ar_app && python make_temple_glb.py && python make_gapura_glb.py
+wrote Module5/ar_app/assets/pusaka_temple.glb (9.4 KB)
+wrote Module5/ar_app/assets/hotspots.json (5 hotspots)
+wrote Module5/ar_app/assets/gapura_bentar.glb (27.1 KB, 17 parts)
+wrote Module5/ar_app/assets/gapura_bentar.json (6 hotspots)
+$ python capture.py && python capture.py --scene andy
+wrote 8 views to data/pusaka_capture
+wrote 8 views to data/andy_capture
+$ python tests.py
+
+ALL CHECKS PASSED (34 ok)
